@@ -13,6 +13,12 @@ const GITNAME= process.env.GITNAME;
 const GIT= process.env.GIT
 
 const git = simpleGit(repoPath);
+
+
+await git.raw(['config', 'user.name', 'Gulshanverma7878']);
+await git.raw(['config', 'user.email', 'gamerronak9@gmail.com']);
+
+
 const appendToFile = () => {
     const filePath = path.join(repoPath, 'file.txt');
     const date = new Date().toISOString();

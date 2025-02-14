@@ -89,7 +89,7 @@ const automateGitPush = async () => {
     }
 })();
 
-cron.schedule('*/5 * * * *', () => {
+cron.schedule('*/2 * * * *', () => {
     automateGitPush().catch(error => {
         console.error('Cron job execution failed:', error);
     });

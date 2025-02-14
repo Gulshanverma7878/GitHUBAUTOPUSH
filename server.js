@@ -1,14 +1,32 @@
+const express = require('express');
 const simpleGit = require('simple-git');
 const cron = require('node-cron');
 const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
+// Express app setup
+const app = express();
+const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Hello World!');
+});
+
+app.get('/status', (req, res) => {
+    res.json({
+        message: 'Server is running',
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
 const repoPath = path.join(__dirname, '');
 const username = process.env.USER;
 const token = process.env.TOKEN;
 const GITNAME = process.env.GITNAME;
-
 const git = simpleGit(repoPath);
 
 const appendToFile = async () => {
@@ -18,7 +36,6 @@ const appendToFile = async () => {
         const filePath = path.join(repoPath, 'file.txt');
         const date = new Date().toISOString();
         const content = `Update Code test on ${date}\n`;
-
         fs.appendFileSync(filePath, content, 'utf8');
         console.log('Content appended to file.txt');
     } catch (error) {
@@ -29,7 +46,6 @@ const appendToFile = async () => {
 
 const automateGitPush = async () => {
     try {
-        // Debug: Print environment variables (sanitized)
         console.log('Debug - Environment variables:');
         console.log('Username exists:', !!username);
         console.log('Token exists:', !!token);
@@ -37,7 +53,6 @@ const automateGitPush = async () => {
         
         await appendToFile();
         
-        // Debug: Check git status before add
         const statusBefore = await git.status();
         console.log('Git status before add:', statusBefore);
         
@@ -48,11 +63,9 @@ const automateGitPush = async () => {
         await git.commit(commitMessage);
         console.log('Changes committed.');
 
-        // Debug: Check git status after commit
         const statusAfter = await git.status();
         console.log('Git status after commit:', statusAfter);
 
-        // Use more detailed error handling for push
         try {
             const remote = `https://${username}:${token}@github.com/${username}/${GITNAME}`;
             console.log('Pushing to remote:', remote.replace(token, '****'));
@@ -70,7 +83,6 @@ const automateGitPush = async () => {
     }
 };
 
-// Test the connection before starting the cron job
 (async () => {
     try {
         const remotes = await git.getRemotes(true);
@@ -82,9 +94,8 @@ const automateGitPush = async () => {
     }
 })();
 
-cron.schedule('*/1 * * * *', () => {
+cron.schedule('*/5 * * * *', () => {
     automateGitPush().catch(error => {
         console.error('Cron job execution failed:', error);
     });
 });
-automateGitPush();

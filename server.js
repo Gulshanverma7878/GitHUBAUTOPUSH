@@ -5,11 +5,12 @@ const path = require('path');
 require('dotenv').config();
 
 
-const repoPath = process.env.RPATH; 
+const repoPath = path.join(__dirname, '');
 
 const username = process.env.USER; 
 const token = process.env.TOKEN;
 const GITNAME= process.env.GITNAME;
+const GIT= process.env.GIT
 
 const git = simpleGit(repoPath);
 const appendToFile = () => {

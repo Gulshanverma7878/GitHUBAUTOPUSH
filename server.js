@@ -7,19 +7,20 @@ require('dotenv').config();
 
 const repoPath = path.join(__dirname, '');
 
-const username = process.env.USER; 
+const username = process.env.USER;
 const token = process.env.TOKEN;
-const GITNAME= process.env.GITNAME;
-const GIT= process.env.GIT
+const GITNAME = process.env.GITNAME;
+const GIT = process.env.GIT
 
 const git = simpleGit(repoPath);
 
 
-await git.raw(['config', 'user.name', 'Gulshanverma7878']);
-await git.raw(['config', 'user.email', 'gamerronak9@gmail.com']);
 
 
-const appendToFile = () => {
+const appendToFile = async () => {
+
+    await git.raw(['config', 'user.name', 'Gulshanverma7878']);
+    await git.raw(['config', 'user.email', 'gamerronak9@gmail.com']);
     const filePath = path.join(repoPath, 'file.txt');
     const date = new Date().toISOString();
     const content = `Update Code test on ${date}\n`;
@@ -45,7 +46,7 @@ const automateGitPush = async () => {
 
 
 
-cron.schedule('*/5 * * * *', () => { 
+cron.schedule('*/5 * * * *', () => {
     automateGitPush();
 });
 

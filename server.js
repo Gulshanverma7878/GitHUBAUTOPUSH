@@ -83,7 +83,7 @@ const automateGitPush = async () => {
         await appendToFile();
 
         // Check git status before operations
-        const statusBefore = await git.status();
+        const statusBefore = await git.status();//your code
         console.log('Git status before operations:', statusBefore);
 
         // Add changes

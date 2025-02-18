@@ -70,7 +70,7 @@ const automateGitPush = async () => {
 
         console.log('Debug - Environment variables:');
         console.log('Username exists:', !!username);
-        console.log('Token exists:', !!token);
+        console.log('Token exists:', !!token);// uodate
         console.log('GITNAME exists:', !!GITNAME);
 
         // Initialize repository if needed

@@ -132,7 +132,7 @@ app.post('/trigger-push', async (req, res) => {
         console.log('Running initial test...');
         const remotes = await git.getRemotes(true);
         console.log('Configured remotes:', remotes);
-        
+        //
         await automateGitPush();
         console.log('Initial test completed successfully');
     } catch (error) {

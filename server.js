@@ -102,7 +102,7 @@ const automateGitPush = async () => {
         return 'Git operations completed successfully';
     } catch (error) {
         console.error('Error during Git operations:', error);
-        throw error;
+        throw error;//
     }
 };
 

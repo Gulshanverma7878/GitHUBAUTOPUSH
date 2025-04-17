@@ -11,6 +11,16 @@ const username = process.env.USER;
 const token = process.env.TOKEN;
 const GITNAME = process.env.GITNAME;
 
+
+
+const cors = require('cors');
+
+
+
+app.use(cors());
+
+
+
 const git = simpleGit(repoPath);
 
 // Initialize repository if it doesn't exist

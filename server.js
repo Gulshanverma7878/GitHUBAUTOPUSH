@@ -140,16 +140,56 @@ app.post('/trigger-push', async (req, res) => {
     }
 })();
 
-// Schedule cron job
-cron.schedule('*/2 * * * *', () => {
-    console.log('Running scheduled Git push...');
-    automateGitPush()
-        .then(() => console.log('Scheduled push completed successfully'))
-        .catch(error => console.error('Scheduled push failed:', error));
-});
+// // Schedule cron job
+// cron.schedule('*/2 * * * *', () => {
+//     console.log('Running scheduled Git push...');
+//     automateGitPush()
+//         .then(() => console.log('Scheduled push completed successfully'))
+//         .catch(error => console.error('Scheduled push failed:', error));
+// });
 
 // Start server
+
+
+
+
+
+
+const {sendEmail}=require('./config/mailer');
+
+
+app.post('/send-email', async (req, res) => {
+    try{
+        const {name,fatherName,mobileno,email,study,course,city,state}=req.body;
+        const text = `
+        Name: ${name}
+        Father's Name: ${fatherName}
+        Mobile No: ${mobileno}
+        Email: ${email}
+        Study: ${study}
+        Course: ${course}
+        City: ${city}
+        State: ${state}
+        `;
+        const subject = "New Form Submission";
+        const info = await sendEmail("gamerronak9@gmail.com", subject, text);
+        console.log('Message sent: %s', info);
+        return res.status(200).json({
+            status: true,
+            message: "Email sent successfully",
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).json({
+            status: false,
+            message: "Email not  sent ",
+        });
+    }
+});
+
+
 const PORT = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
